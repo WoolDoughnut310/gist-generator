@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { createOAuthDeviceAuth } from "@octokit/auth-oauth-device";
 import { Octokit } from "@octokit/rest";
 import * as readline from "readline";
