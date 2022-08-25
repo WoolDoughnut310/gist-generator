@@ -4,12 +4,11 @@ import { createOAuthDeviceAuth } from "@octokit/auth-oauth-device";
 import { Octokit } from "@octokit/rest";
 import * as readline from "readline";
 
-const CODE_REGEX = /```(?:.+)?\n(?:\/\/|#)\s+(.+)\n((?:.|\n)+?)\n+```/;
-
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
 });
+rl.setPrompt(":");
 
 let octokit: Octokit;
 let markdown = "";
@@ -20,6 +19,12 @@ const resetInput = () => {
     newlines = 2;
 };
 
+const question = (prompt: string) => {
+    return new Promise<string>((resolve, reject) => {
+        rl.question(prompt, resolve);
+    });
+};
+
 const readLines = () => {
     rl.on("line", async (input) => {
         input = input.trimEnd();
@@ -27,17 +32,19 @@ const readLines = () => {
 
         if (input === "") {
             newlines--;
+        } else {
+            newlines = 2;
         }
 
         if (newlines === 0) {
-            const parsedInput = parseMarkdown(markdown);
+            const fileName = await question("Filename: ");
+            const content = markdown.trim();
 
-            if (!parsedInput) {
+            if (!fileName) {
                 resetInput();
+                prompt();
                 return;
             }
-
-            const [fileName, content] = parsedInput;
 
             const response = await octokit.rest.gists.create({
                 public: true,
@@ -55,18 +62,6 @@ const readLines = () => {
 
         rl.prompt();
     });
-};
-
-const parseMarkdown = (markdown: string) => {
-    let match = CODE_REGEX.exec(markdown);
-
-    if (!match) {
-        return;
-    }
-
-    const fileName = match[1];
-    const content = match[2];
-    return [fileName, content];
 };
 
 const auth = createOAuthDeviceAuth({
@@ -87,6 +82,7 @@ async function main() {
     octokit = new Octokit({
         auth: tokenAuthentication.token,
     });
+
     rl.prompt();
     readLines();
 }
