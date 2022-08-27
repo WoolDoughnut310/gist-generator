@@ -27,7 +27,7 @@ const question = (prompt: string) => {
 
 const readLines = () => {
     rl.on("line", async (input) => {
-        input = input.trimEnd();
+        input = input.replace("\r", "");
         markdown += input + "\n";
 
         if (input === "") {
