@@ -11,11 +11,11 @@ const rl = readline.createInterface({
 rl.setPrompt(":");
 
 let octokit: Octokit;
-let markdown = "";
+let content = "";
 let newlines = 2;
 
 const resetInput = () => {
-    markdown = "";
+    content = "";
     newlines = 2;
 };
 
@@ -27,8 +27,11 @@ const question = (prompt: string) => {
 
 const readLines = () => {
     rl.on("line", async (input) => {
+        // line feeds can appear in copied code
         input = input.replace("\r", "");
-        markdown += input + "\n";
+
+        // Append the line to the code content
+        content += input + "\n";
 
         if (input === "") {
             newlines--;
@@ -36,16 +39,19 @@ const readLines = () => {
             newlines = 2;
         }
 
+        // Once 2 blank lines have been entered
         if (newlines === 0) {
             const fileName = await question("Filename: ");
-            const content = markdown.trim();
+            content = content.trim();
 
             if (!fileName) {
+                // Clear the current content
                 resetInput();
                 prompt();
                 return;
             }
 
+            // Create a public gist
             const response = await octokit.rest.gists.create({
                 public: true,
                 files: {
@@ -55,6 +61,7 @@ const readLines = () => {
                 },
             });
 
+            // Output the link to the gist
             console.log(response.data.html_url);
 
             resetInput();
@@ -79,6 +86,7 @@ async function main() {
         type: "oauth",
     });
     console.log("Authenticated.");
+
     octokit = new Octokit({
         auth: tokenAuthentication.token,
     });
