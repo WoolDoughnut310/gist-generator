@@ -1,5 +1,5 @@
 {
-  "name": "markdown-to-gist",
+  "name": "gist-producer",
   "version": "1.0.0",
   "description": "Generate GitHub Gist links from markdown code blocks",
   "scripts": {
@@ -9,7 +9,7 @@
   "author": "Joseph Nma",
   "license": "ISC",
   "bin": {
-    "markdown-to-gist": "dist/index.js"
+    "gist-producer": "dist/index.js"
   },
   "devDependencies": {
     "@types/node": "^18.7.11",

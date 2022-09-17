@@ -1,4 +1,4 @@
-# gist-generator
+# gist-producer
 
 ## Setting up the project
 
