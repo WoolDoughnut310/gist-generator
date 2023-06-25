@@ -3,6 +3,7 @@
 import { createOAuthDeviceAuth } from "@octokit/auth-oauth-device";
 import { Octokit } from "@octokit/rest";
 import * as readline from "readline";
+import clipboard from "clipboardy";
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -62,7 +63,14 @@ const readLines = () => {
             });
 
             // Output the link to the gist
-            console.log(response.data.html_url);
+            const url = response.data.html_url;
+
+            console.log(url);
+
+            if (url) {
+                await clipboard.write(url ?? "");
+                console.log("Copied to clipboard");
+            }
 
             resetInput();
         }
@@ -96,3 +104,5 @@ async function main() {
 }
 
 main();
+
+export default main;

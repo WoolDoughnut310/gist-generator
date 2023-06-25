@@ -8,6 +8,7 @@
   },
   "author": "Joseph Nma",
   "license": "ISC",
+  "type": "module",
   "bin": {
     "gist-producer": "dist/index.js"
   },
@@ -17,6 +18,7 @@
   },
   "dependencies": {
     "@octokit/auth-oauth-device": "^4.0.1",
-    "@octokit/rest": "^19.0.4"
+    "@octokit/rest": "^19.0.4",
+    "clipboardy": "^3.0.0"
   }
 }

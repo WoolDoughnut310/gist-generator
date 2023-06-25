@@ -1,10 +1,10 @@
 {
-  "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "outDir": "dist"
-  }
+    "compilerOptions": {
+        "target": "es2016",
+        "module": "Node16",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "outDir": "dist"
+    }
 }
